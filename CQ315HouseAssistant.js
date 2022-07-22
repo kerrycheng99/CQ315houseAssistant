@@ -3,14 +3,15 @@
 // @name:en        CQ315House - Housing Info Query Assistant
 // @name:zh        重庆网上房地产-房源信息查询助手
 // @namespace      glasscp@163.com
-// @version        0.1.6
+// @version        0.1.7
 // @description    重庆网上房地产-房源信息查询助手(仅供个人学习研究使用,任何公司或个人不得利用其从事违法经营活动)
 // @description:en CQ315House - Housing information query assistant
 // @author         Kerry
-// @match          *://*.cq315house.com/*
-// @match          *://218.70.88.119/*
+// @match          *://*.cq315house.com/HtmlPage/ShowRooms.html*
+// @match          *://218.70.88.119/HtmlPage/ShowRooms.html*
 // @icon           data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoyODAyM2RjZC1jZjM3LTYyNDAtYTdjOC1hNTdlNjc0MWYxYzciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjVBQTk2NTdCNEFBMTFFN0E2QzNFNDBFQUJDODVBNjgiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjVBQTk2NTZCNEFBMTFFN0E2QzNFNDBFQUJDODVBNjgiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MTU0Y2E5ZjctZGNlOS0zMDRmLWE1YjAtZGY1ZGI1YTM2YmFjIiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6MmI5ZjY0N2EtNzViMi0xMWU3LTkzN2QtYzZiYTEwYjI0Y2VlIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+5kXnggAABLBJREFUeNrsm39oVlUYx9/pVGyZMGVhitofooaIrjBXSyV/QP5MmbJwGmItckIalflr4kjRIoomlUNR0CidpCIuN5UITeYP1kqEmq2NNNZWuaWzEvWd34d9Fw+H9937vtu9772vOwc+3N1z7z33PN/7nPOc87wsqaWlJdCVS5IVwApgBbACOFnSpn0SzW2jQRF4HPwMVoBSJ97fUPZqTPd380D0meBb8CRIBiNACVjuhQfEW4DXwGHwYIh+FIJtoPv9KIAY9TH40HjnHnBLneeBI+Ch+0mAvnRxPTj/A9lgMXgW/KGuPcchMsRoZzDYrXjBic4lu2z8UHAUPKbnKTAHlPP8DOcDuW8k60aBs7zvLOvSwYuGsJ/72QMy2Hlt/CUaW27cW8P7j6u6h8HXYEG4CObnIZDNzqepOglzT4HaMM/8DaaDT1Vdb7APrE2IOQBrAPkq6+mavdQlmQBngOsRmrjDueJ1EFT17zCC+FcAGN+Ls3qBqg6y4zK7342huQ/A8+CmqpvkWwFgfH8cToKFqroZzAIfdbBZCYfPgKu+DoMwXlZy58DTqvoKz0s62fx3YByoCHGtv+cCwPgpnNEfVdXn2ekfHPpIdfSEgyGizFLPBIDxuTh8xXjcVg5wrP7usKf+A7LAu0bfd4CtnbEjuQOGy7J2C3jDuCR1a4Bb+2uZUFeBKrBd7RneAsNADoVyzwNgfAoOXxrG3wZLsA1dDeKRXNgJpoImVTcXnAIDXBMAxg/kS2ar6mvSGRi+O867SllkjWcuIaCWyufQz7GOC4BG0zmp6cbFFTNg/DceJXN+oginVN0gmZTR31mOCYDG5vAlqar6expf5XFG6y8gkWi/qusJDqHfK6NpoN2UGBp5k5ObKZS4/Ykwz3ghxFBuqMwik+Vy9PVOTB4AI3qAIoadbmHW7PEs/cA0kMkNUrTlFVmMwZa+sQ6BveBldf6vh26ew3VFKYdiNRgexdD431uZa4hJgEKVqpKXT/BQAIk+m5k52slQtyLCM4vARbV+KIhJAIyZ02ykUhIYOL/goQDvgw0MfYWsi5QzrONwkZXq2+h/WcxRAA8V4/AEjr96PNPr+WYej8ciPYR+S+5hJo7vdXgpjIej3sNzSzxKVdUSSW3N50xdLyEKXFb3yY8jk+nav3HTUx3iFbIAW0dP+CyaPqH/Qcf3Au2UTGPHthH8SRfuqeo3BVqzwcXMFOUa7Wzm9S8M42WjdYHL3qBTnXYzKzzbWDm2lR7cxclXfynM9SLO+o3K+NP8u9mXKbEQRYz/BeQHWvP4uqTQ+AbO0EXGV+0TaP0JTcouijKO2aEmeo7vPaCRSYsGnkt+L8/YRU4EP/JcfhzR2d/RPEpW+AGj7YpEEOCwMr5t5tYClCnjA1ysrA2R8lrmZohxcwhcMc7NLJG5dq839ynxiLFuChCMsH+4G+H+QKILkBDFCmAFsAJYAbp0cWwhhJ2X7PKS2skJVkaI7bXxiv3WA6wAVgArgBXACtC5MJiFcDfGR3akxluAPJ9/2KAbQ6AqQbxaftGqccMDJH0ty7xHfGy8JEzzsSq9Ee0D9l9mrABWACuAFcAKYAWwAnTZck+AAQAW0kT67b3FTwAAAABJRU5ErkJggg==
 // @require        https://cdn.staticfile.org/xlsx/0.18.5/xlsx.full.min.js
+// @grant          GM_addStyle
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_log
@@ -25,7 +26,6 @@
     var currentUrl = window.location.origin + window.location.pathname;
     var currentPath = window.location.pathname;//URL的路径部分(即文件地址)
     const RouteDataParas = {
-        roomListUrl: 'http://www.cq315house.com/HtmlPage/ShowRooms.html',
         roomListPath: '/HtmlPage/ShowRooms.html',
         roomInfoWebSrvUrl: '../WebService/Handler.ashx?ac=fwxx1&fid=',//返回户室信息img
         projInfoWebSrvUrl: '../WebService/Handler.ashx?ac=xmxx&text=',//返回项目信息img
@@ -47,18 +47,20 @@
     var SELECTED_DATA_TYPE=displayDataTypes[0].Key;
     var vfObj = {
         totalCap: '房源共计：',
-        totalStyle: 'font-weight:800;background-color: #4dbb7c;padding:0 5px;',
         unitCap: ' 套',
-        rpurpCap: '用        途：',
-        rstruCap: '结        构：',
-        rTypeCap: '户        型：',
+        utitlCap: '单元',
+        rrmnoCap: '房      号：',
+        rpurpCap: '用      途：',
+        rstruCap: '结      构：',
+        rTypeCap: '户      型：',
         rbareCap: '建筑面积：',
         riareCap: '套内面积：',
         runitCap: ' ㎡',
         ipricCap: '套内单价：',
         bpricCap: '建面单价：',
         punitCap: ' 元/㎡',
-        tpricCap: '总价(万元)：',
+        tpricCap: '房屋总价：',
+        tunitCap: ' 万元',
         tbId: '_mybuilding'
     };
     var statsObj = {
@@ -82,42 +84,52 @@
     var resetProjectList = [
         {
             builIds: [
-                '_Nvdyi0aqwdrr4_vEE1yEA',
-                'zNcayCnXbHNbZFjuqABcmQ',
-                'osf07q_u1SlnW2mnzzGvUA',
-                'DXKShHLSXjcfVfRtR58JxQ',
-                'BMs2W/DG9tT0r87oOEcYgg',
-                'NpUcbqvhs_ww3ZtTIbA91g',
-                'vGyPYgMczivXTpUVXkfrKQ',
-                '4ie6/iv0q5WuI3l2lXRkBw',
+                '_Nvdyi0aqwdrr4_vEE1yEA','zNcayCnXbHNbZFjuqABcmQ','osf07q_u1SlnW2mnzzGvUA',
+                'DXKShHLSXjcfVfRtR58JxQ','BMs2W/DG9tT0r87oOEcYgg','NpUcbqvhs_ww3ZtTIbA91g',
+                'vGyPYgMczivXTpUVXkfrKQ','4ie6/iv0q5WuI3l2lXRkBw',
+                'ILq22rFreTB0yhSAJX3p6Q','NpgsupKMSejJ3rnXbNE58A',
             ],
             emptyTxt: '和光尘樾 ',
         },
         {
             builIds: [
-                'H85THYxtxAPc0_IJxfNfVg',
-                'dyEUO5of8VbFj_VWfAtYyA',
-                '_cn7Zrwf1VoQ57_h9BMCSQ',
-                'X65zOBuwW7e4PPahVwf_cw',
-                'ooWKOieb/0QPEQUB_QHfSg',
-                'Et2mdSVordxUBVz56TPzyQ',
-                '_iz10xgVDfQScg18sFJGnw',
-                '9nzRVN1z0Dl_coiB93SJhQ',
-                '0NvQtPMid86oWa4qysCj1Q',
-                'ZNbLVyGZ1/XgjmaOSccJtA',
-                'sfJ7Me/eqY8MTuOk_kOEmw',
-                'HQRUsNsjeUld/Gd_PcSUcQ',
-                'iexozwEMpb3jRZzLfoO00w',
-                'AdcGyoSzNKNQnF/7U9uTIA',
-                'ylFKWS5jiE54R0wXtCxzaQ',
-                'LfR1GSc93ds44LsEP5Bw7w',
-                'Vwr/_Y2DptBHndpRXKMYVw',
-                'ow5QDChnWAKQS_9VR_kteQ',
+                'H85THYxtxAPc0_IJxfNfVg','dyEUO5of8VbFj_VWfAtYyA','_cn7Zrwf1VoQ57_h9BMCSQ',
+                'X65zOBuwW7e4PPahVwf_cw','ooWKOieb/0QPEQUB_QHfSg','Et2mdSVordxUBVz56TPzyQ',
+                '_iz10xgVDfQScg18sFJGnw','9nzRVN1z0Dl_coiB93SJhQ','0NvQtPMid86oWa4qysCj1Q',
+                'ZNbLVyGZ1/XgjmaOSccJtA','sfJ7Me/eqY8MTuOk_kOEmw','HQRUsNsjeUld/Gd_PcSUcQ',
+                'iexozwEMpb3jRZzLfoO00w','AdcGyoSzNKNQnF/7U9uTIA','ylFKWS5jiE54R0wXtCxzaQ',
+                'LfR1GSc93ds44LsEP5Bw7w','Vwr/_Y2DptBHndpRXKMYVw','ow5QDChnWAKQS_9VR_kteQ',
                 'ICAH7OA9N56h4FsqmJ2hvg',
             ],
             emptyTxt: ' 中粮·天悦壹号',
         },
     ];
+    let cssText = `
+        .spanRoomUse,.spanRoomStru,.spanRoomType,.spanRoombArea,
+        .spanRoomiArea,.spanKfsNsjg,.spanKfsNsjmjg,.spanRoomState,
+        .spanZxsp,.spanRoomNo,.spanRoomStatus,.spanRoomTotalPrice{display:none;}
+        .tbtop1{cursor:pointer;}
+        .tbtop2-td1{vertical-align:bottom;font-weight:600;}
+        .tbtop2-td2{padding-left:20px;vertical-align:bottom;}
+        .tbtop2-td3{padding-left:20px;vertical-align:top;}
+        .div-open-title{margin-left:5px;margin-top:5px;height:40px;line-height:40px;cursor:pointer;padding-left:10px;}
+        .project-name{margin-bottom:-5px;}
+        .fold-project-name{padding:0 20px;}
+        .div-lpsm{padding:10px 0 0 10px;}
+        .div-datatype{margin:-1px 0 10px 5px;padding-left:10px;text-align:left;height:40px;line-height:40px;}
+        .radio-inline:not(:first-child){margin-left:20px;}
+        .radio-item{vertical-align:middle;margin-top:-2px;}
+        .btn-excel{margin-left:30px;height:25px;cursor:pointer;background-color:#fff;border:1px solid #fff;border-radius:4px;}
+        .btn-excel:hover{background-color:#eee;border:1px solid #999;}
+        .bg-orange{background-color:#ffa500!important;}/*[认购]状态橙色背景*/
+        .color-black{color:#000;}
+        .legend{display:inline-block;width:50px;margin-right:15px;}
+        .legend-allow{background-color:#00ff00;}
+        .legend-sell{background-color:#ff00ff;}
+        .legend-subs{background-color:#ffa500;}
+        .legend-unallow{background-color:#ffff00;}
+    `
+    GM_addStyle(cssText);
 
     // cq315house[楼盘表]解析开始
     var cq315houseAnalysis={};
@@ -152,7 +164,6 @@
                 if (!tbCells[x].getElementsByClassName('spanRoomNo')[0]){
                     let spanRoomNo = document.createElement('span');
                     spanRoomNo.className='spanRoomNo';
-                    spanRoomNo.style.cssText = 'display:none;';
                     spanRoomNo.innerText = `房号：${tbCells[x].getElementsByTagName("a")[0].innerText.trim()}`;
                     tbCells[x].appendChild(spanRoomNo);
                 }
@@ -160,7 +171,6 @@
                 if (!tbCells[x].getElementsByClassName('spanRoomStatus')[0]){
                     let spanRoomStatus = document.createElement('span');
                     spanRoomStatus.className='spanRoomStatus';
-                    spanRoomStatus.style.cssText = 'display:none;';
                     spanRoomStatus.innerText = `房屋状态：${roomStatus}`;
                     tbCells[x].appendChild(spanRoomStatus);
                 }
@@ -168,7 +178,6 @@
                 if (!tbCells[x].getElementsByClassName('spanRoomTotalPrice')[0]){
                     let spanRoomTotalPrice = document.createElement('span');
                     spanRoomTotalPrice.className='spanRoomTotalPrice';
-                    spanRoomTotalPrice.style.cssText = 'display:none;';
                     let roomIarea = tbCells[x].getElementsByClassName('spanRoomiArea')[0].innerText.split('：')[1].toString().trim();//套内面积
                     let roomNsjg = tbCells[x].getElementsByClassName('spanKfsNsjg')[0].innerText.split('：')[1].toString().trim();//套内单价
                     let totalPrice = (Math.floor(((roomIarea * 1) * (roomNsjg * 1)/10000) * 100) / 100).toFixed(2);
@@ -189,17 +198,17 @@
                 let curAlink = tbCells[x].getElementsByTagName('a')[0];
                 curAlink.setAttribute('data-roomid',roomId);//把房号ID绑定给自定义data-roomid属性
                 curAlink.setAttribute('data-unitno',unitNo);//把单元No绑定给自定义data-unitno属性
-                curAlink.style.cssText = 'color:#000;';
+                curAlink.className = 'color-black';
                 curAlink.removeAttribute('onclick');//移除原始onclick事件
                 curAlink.onclick=function(){cq315houseAnalysis.ShowRoomInfoByPass(this);};//alink重置onclick事件
                 curAlink.removeAttribute('onmouseover');//移除原始onmouseover事件
                 //初始化Title内容(和cq315原始保持一致)
                 curAlink.title = '用      途：' + tbCells[x].getElementsByClassName('spanRoomUse')[0].innerText.split('：')[1].toString().trim() +
-                                '\r\n结      构：' + tbCells[x].getElementsByClassName('spanRoomStru')[0].innerText.split('：')[1].toString().trim() +
-                                '\r\n户      型：' + tbCells[x].getElementsByClassName('spanRoomType')[0].innerText.split('：')[1].toString().trim() +
-                                '\r\n建筑面积：' + tbCells[x].getElementsByClassName('spanRoombArea')[0].innerText.split('：')[1].toString().trim() +
-                                '\r\n套内面积：' + tbCells[x].getElementsByClassName('spanRoomiArea')[0].innerText.split('：')[1].toString().trim() +
-                                '\r\n<a href=\"javascript:void(0);\">户室信息刷新</a>';
+                                '\n结      构：' + tbCells[x].getElementsByClassName('spanRoomStru')[0].innerText.split('：')[1].toString().trim() +
+                                '\n户      型：' + tbCells[x].getElementsByClassName('spanRoomType')[0].innerText.split('：')[1].toString().trim() +
+                                '\n建筑面积：' + tbCells[x].getElementsByClassName('spanRoombArea')[0].innerText.split('：')[1].toString().trim() +
+                                '\n套内面积：' + tbCells[x].getElementsByClassName('spanRoomiArea')[0].innerText.split('：')[1].toString().trim() +
+                                '\n<a href=\"javascript:void(0);\">户室信息刷新</a>';
                 curAlink.onmouseover = function() {cq315houseAnalysis.titleMouseOver(this);}//重新绑定onmouseover事件
                 curAlink.onmouseout = function() {cq315houseAnalysis.titleMouseOut(this);}//重新绑定onmouseout事件
             }
@@ -211,7 +220,7 @@
         let tbTop2FirstRow = document.getElementById('tbTop2').tBodies[0].rows[0];
         if (!tbTop2FirstRow.cells[1]) {
             let objTd = document.createElement('td');
-            objTd.style.cssText = 'vertical-align:bottom;font-weight:600;';
+            objTd.className = 'tbtop2-td1';
             objTd.appendChild(divTotalCntText);
             tbTop2FirstRow.appendChild(objTd);
         } else {
@@ -225,7 +234,7 @@
         divDataRangeText.innerHTML = `${bpricRange}<br/>${ipricRange}`;
         if (!tbTop2FirstRow.cells[2]) {
             let objTd = document.createElement('td');
-            objTd.style.cssText = 'padding-left:20px;vertical-align:bottom;';
+            objTd.className = 'tbtop2-td2';
             objTd.appendChild(divDataRangeText);
             tbTop2FirstRow.appendChild(objTd);
         } else {
@@ -237,7 +246,7 @@
         spanApiMsg.id='spanApiMsg';
         if (!tbTop2FirstRow.cells[3]) {
             let objTd = document.createElement('td');
-            objTd.style.cssText = 'padding-left:20px;vertical-align:top;';
+            objTd.className = 'tbtop2-td3';
             objTd.appendChild(spanApiMsg);
             tbTop2FirstRow.appendChild(objTd);
         } else {
@@ -247,17 +256,17 @@
         // 2.[图例]table重置: 追加[认购]状态,追加各状态下的房源合计
         let tbTuliFirstRow = document.getElementById('tbTuli').tBodies[0].rows[0];
         tbTuliFirstRow.cells.innerHTML='';
-        tbTuliFirstRow.cells[1].innerHTML=`<span style="display:inline-block;width:50px;margin-right:15px;background-color:#00ff00;">&nbsp;</span>可销售: <span id="spanAllowCnt">${statsObj.allowCnt}</span>${vfObj.unitCap}`;
-        tbTuliFirstRow.cells[2].innerHTML=`<span style="display:inline-block;width:50px;margin-right:15px;background-color:#ff00ff;">&nbsp;</span>已销售: <span id="spanSellCnt">${statsObj.sellCnt}</span>${vfObj.unitCap}`;
-        tbTuliFirstRow.cells[3].innerHTML=`<span style="display:inline-block;width:50px;margin-right:15px;background-color:#ffa500;">&nbsp;</span>已认购: <span id="spanSubsCnt">${statsObj.subsCnt}</span>${vfObj.unitCap}`;
+        tbTuliFirstRow.cells[1].innerHTML=`<span class="legend legend-allow">&nbsp;</span>可销售: <span id="spanAllowCnt">${statsObj.allowCnt}</span>${vfObj.unitCap}`;
+        tbTuliFirstRow.cells[2].innerHTML=`<span class="legend legend-sell">&nbsp;</span>已销售: <span id="spanSellCnt">${statsObj.sellCnt}</span>${vfObj.unitCap}`;
+        tbTuliFirstRow.cells[3].innerHTML=`<span class="legend legend-subs">&nbsp;</span>已认购: <span id="spanSubsCnt">${statsObj.subsCnt}</span>${vfObj.unitCap}`;
         if (!tbTuliFirstRow.cells[4]) {
             let tdPlus = document.createElement('td');
             tbTuliFirstRow.appendChild(tdPlus);
         }
-        tbTuliFirstRow.cells[4].innerHTML='<span style="display:inline-block;width:50px;margin-right:15px;background-color:#ffff00;">&nbsp;</span>不可售';
+        tbTuliFirstRow.cells[4].innerHTML='<span class="legend legend-unallow">&nbsp;</span>不可售';
         // 3.[收起]div标签重置
         let tbTop1FirstRow = document.getElementById('tbTop1').tBodies[0].rows[0];
-        tbTop1FirstRow.style.cssText = 'cursor: pointer;';
+        tbTop1FirstRow.className = 'tbtop1';
         tbTop1FirstRow.onclick=function(){
             document.getElementById('titlesPan').style.display='none';
             document.getElementById('OpenTitleSpanDiv').style.display='block';
@@ -272,12 +281,13 @@
         let spanFoldTotalCnt=document.createElement('span');
         spanFoldTotalCnt.id='spanFoldTotalCnt';
         divOpenTitle.innerHTML='';
-        divOpenTitle.style.cssText = 'margin-left:5px;margin-top:5px;height:40px;line-height:40px;cursor:pointer;padding-left:10px;';
+        divOpenTitle.classList.add('div-open-title');
+        divOpenTitle.removeAttribute('style');
         spanFoldText.innerText='展开';
         imgProjectName.setAttribute('src',document.getElementById('projectName_img').getAttribute('src'));
-        imgProjectName.style.cssText='margin-bottom:-5px;';
+        imgProjectName.className = 'project-name';
         spanFoldProjectName.appendChild(imgProjectName);
-        spanFoldProjectName.style.cssText='padding: 0 20px;';
+        spanFoldProjectName.className = 'fold-project-name';
         spanFoldCntInfo1.innerText=`【${getQueryString('block')}】${vfObj.totalCap}`;
         spanFoldCntInfo2.innerText=`${vfObj.unitCap}`;
         spanFoldTotalCnt.innerText=`${statsObj.totalCnt}`;
@@ -292,9 +302,7 @@
         };
         divOpenTitle.click();
         //[楼盘说明]div标签CSS重置
-        let divLpsm = document.getElementById('lpsm');
-        divLpsm.removeAttribute('class');
-        divLpsm.style.cssText = 'padding: 10px 0 0 10px;';
+        document.getElementById('lpsm').className = 'div-lpsm';
     };
     /**
      * 鼠标悬停显示TITLE
@@ -417,20 +425,19 @@
         let divObj = document.createElement('div');
         divObj.id = 'datatype-text-box';
         divObj.className = 'modal-content';
-        divObj.style.cssText = 'margin:-1px 0 10px 5px;padding-left:10px;text-align:left;height:40px;line-height:40px;';
+        divObj.classList.add('div-datatype');
         let radios = '';
         for (let y = 0, len = displayDataTypes.length; y < len; y++) {
             let displayDataType = displayDataTypes[y];
+            radios += '<label class="radio-inline">';
             if (y == 0) {
-                radios += '<label class="radio-inline">';
-                radios += `<input type="radio" name="dataTypeRadioOptions" value="${displayDataType.Key}" style="vertical-align:middle;margin-top:-2px;" checked="true"> ${displayDataType.Value}`;
+                radios += `<input type="radio" name="dataTypeRadioOptions" value="${displayDataType.Key}" class="radio-item" checked="true"> ${displayDataType.Value}`;
             } else {
-                radios += '<label class="radio-inline" style="margin-left:20px;">';
-                radios += `<input type="radio" name="dataTypeRadioOptions" value="${displayDataType.Key}" style="vertical-align:middle;margin-top:-2px;"> ${displayDataType.Value}`;
+                radios += `<input type="radio" name="dataTypeRadioOptions" value="${displayDataType.Key}" class="radio-item"> ${displayDataType.Value}`;
             }
             radios += '</label>';
         }
-        radios += '<input type="button" name="btnExportExcel" value="导出Excel" style="margin-left:30px;height:25px;cursor:pointer;background-color:#fff;border:1px solid #fff;border-radius:4px;">';
+        radios += '<input type="button" name="btnExportExcel" value="导出Excel" class="btn-excel">';
         divObj.innerHTML = radios;
         parent.insertBefore(divObj, targentElement.nextSibling);
         //绑定事件
@@ -441,16 +448,6 @@
         //绑定导出Excel按钮事件
         let objBtn = document.getElementsByName('btnExportExcel')[0];
         objBtn.onclick = function(){cq315houseAnalysis.exportExcel();};
-        objBtn.onmouseover = function () {
-            //设置其背景及边框颜色
-            this.style.setProperty('background-color','#eee');
-            this.style.setProperty('border','1px solid #999');
-        };
-        objBtn.onmouseout = function () {
-            //恢复背景及边框颜色
-            this.style.setProperty('background-color','#fff');
-            this.style.setProperty('border','1px solid #fff');
-        };
     };
     //用户反映315house个别楼盘项目信息img不显示,单独修正之
     cq315houseAnalysis.resetProjectInfoImg=function(){
@@ -585,10 +582,8 @@
                 document.getElementById('spanFoldTotalCnt').innerText = statsObj.totalCnt;
                 // 原始已销售#ff00ff,但其实是含有[认购]状态的
                 // [认购]状态下房号Cell背景色重置
-                // if (bgColor == 'rgb(255, 0, 255)' && roomStatus.indexOf('认购')!=-1) {
-                // 来福士广场T1塔楼18-5: 认购状态下背景是绿色而非紫色
                 if (roomStatus.indexOf('认购') != -1) {
-                    pTbCell.style.cssText = 'background-color: #ffa500;'; //[认购]状态单独用橙色背景区分
+                    pTbCell.classList.add('bg-orange'); //[认购]状态单独用橙色背景区分
                 }
                 // 房号cell中alink重新绑定title信息
                 let curAlink = pTbCell.getElementsByTagName('a')[0];
@@ -621,13 +616,13 @@
             else {
                 console.log('Status Code:', xhr.status, roomInfos.roomId);
                 let spanApiMsg = document.getElementById('spanApiMsg');
-                spanApiMsg.innerText += `${roomInfos.unitNo}单元 ${roomInfos.roomNo}: 房源信息获取失败: ${xhr.status};\r\n`;
+                spanApiMsg.innerText += `${roomInfos.unitNo}单元 ${roomInfos.roomNo}: 房源信息获取失败: ${xhr.status};\n`;
             }
         };
         xhr.onerror = function (e) {
             console.log('Status Code:', xhr.status, roomInfos.roomId);
             let spanApiMsg = document.getElementById('spanApiMsg');
-            spanApiMsg.innerText += `${roomInfos.unitNo}单元 ${roomInfos.roomNo}: 房源信息获取失败: ${xhr.status};\r\n`;
+            spanApiMsg.innerText += `${roomInfos.unitNo}单元 ${roomInfos.roomNo}: 房源信息获取失败: ${xhr.status};\n`;
         };
         //发送数据
         xhr.send(JSON.stringify(payload_data));
@@ -699,17 +694,17 @@
     //绑定alink的tips(title显示文本)
     cq315houseAnalysis.__bindTitle=function(roomInfos) {
         let str = '房      号：' + roomInfos.unitNo + '单元 ' + roomInfos.roomNo +
-            '\r\n用      途：' + roomInfos.roomUse +
-            '\r\n结      构：' + roomInfos.roomStru +
-            '\r\n户      型：' + roomInfos.roomType +
-            '\r\n建筑面积：' + roomInfos.roomBarea + ' ㎡' +
-            '\r\n套内面积：' + roomInfos.roomIarea + ' ㎡' +
-            '\r\n建面单价：' + roomInfos.roomNsjmjg + ' 元/㎡' +
-            '\r\n套内单价：' + roomInfos.roomNsjg + ' 元/㎡' +
-            '\r\n房屋总价：' + roomInfos.roomTotalPrice + ' 万元' +
-            '\r\n房屋状态：' + roomInfos.roomStatus +
-            '\r\n详细状态：' + roomInfos.roomState;
-            // '\r\n<a href=\"javascript:void(0);\">户室信息刷新</a>';
+            '\n用      途：' + roomInfos.roomUse +
+            '\n结      构：' + roomInfos.roomStru +
+            '\n户      型：' + roomInfos.roomType +
+            '\n建筑面积：' + roomInfos.roomBarea + ' ㎡' +
+            '\n套内面积：' + roomInfos.roomIarea + ' ㎡' +
+            '\n建面单价：' + roomInfos.roomNsjmjg + ' 元/㎡' +
+            '\n套内单价：' + roomInfos.roomNsjg + ' 元/㎡' +
+            '\n房屋总价：' + roomInfos.roomTotalPrice + ' 万元' +
+            '\n房屋状态：' + roomInfos.roomStatus +
+            '\n详细状态：' + roomInfos.roomState;
+            // '\n<a href=\"javascript:void(0);\">户室信息刷新</a>';
         return str;
     };
     //弹窗显示所点击房号的房源详细信息
@@ -723,7 +718,6 @@
             imgObj.id = 'img-roominfo';
             document.getElementById('myModalContent').appendChild(imgObj);
         }
-        // [../WebService/Handler.ashx?ac=fwxx1&fid=' + roomId]
         document.getElementById('img-roominfo').setAttribute('src',`${RouteDataParas.roomInfoWebSrvUrl}${roomId}`);
         document.getElementById('showDialog').click();
     };
@@ -777,8 +771,8 @@
         try {
             window.console && window.console.log && (
                 console.log('%c\n当你挤地铁时，阿拉斯加的鳕鱼正跃出水面。\n当你看设计书时，大洋彼岸的海鸥正振翅掠过城市上方。\n当你被产品经理完虐时，极图的夜空散满了五彩斑斓。\n但是啊，别着急，\n当你为自己的未来努力奋斗时，\n那些你感觉从来不会看到的风景，\n那些你觉得终身不会遇到的人，\n你要的一切，\n正一步步向你走来。\n\n', 'color:green'),
-                console.log('%c查询助手版次:0.1.6\n重构Title tooltips功能，增加"户室信息刷新"链接;\n修正个别楼盘项目信息图片不显示的问题(非必须);\n\n', 'color:purple'),
-                console.log('%c寻Python开发志同道合者\n油猴脚本地址：https://greasyfork.org/zh-CN/scripts/444147-重庆网上房地产-房源信息查询助手', 'color:red'))
+                console.log(`%c${GM_info.script.name} Ver.${GM_info.script.version}:\nCSS整理;\n脚本调整为仅匹配[楼盘表]页面;\n\n`, 'color:purple'),
+                console.log('%c寻Python开发志同道合者\n油猴脚本地址：https://greasyfork.org/scripts/444147', 'color:red'))
         } catch (e) {}
     };
 
