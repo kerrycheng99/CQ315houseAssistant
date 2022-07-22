@@ -3,7 +3,7 @@
 // @name:en        CQ315House - Housing Info Query Assistant
 // @name:zh        重庆网上房地产-房源信息查询助手
 // @namespace      glasscp@163.com
-// @version        0.1.5
+// @version        0.1.6
 // @description    重庆网上房地产-房源信息查询助手(仅供个人学习研究使用,任何公司或个人不得利用其从事违法经营活动)
 // @description:en CQ315House - Housing information query assistant
 // @author         Kerry
@@ -27,7 +27,9 @@
     const RouteDataParas = {
         roomListUrl: 'http://www.cq315house.com/HtmlPage/ShowRooms.html',
         roomListPath: '/HtmlPage/ShowRooms.html',
-        roomInfoWebSrvUrl: '../WebService/Handler.ashx?ac=fwxx1&fid=',
+        roomInfoWebSrvUrl: '../WebService/Handler.ashx?ac=fwxx1&fid=',//返回户室信息img
+        projInfoWebSrvUrl: '../WebService/Handler.ashx?ac=xmxx&text=',//返回项目信息img
+        projNameWebSrvUrl: '../WebService/Handler.ashx?ac=xmmc&text=',//返回项目名称img
         webSrvUrl: '../WebService/WebFormService.aspx',
         buildInfoXhr: '/GetBuildingInfo', //获取楼盘信息 {"buildingid":""}
         roomListXhr: '/GetRoomJson', //获取楼盘户室详细信息 {"buildingid":""}
@@ -76,6 +78,46 @@
         tpricMax: 0, //总价Max
         apiMsg: '' //[GetRoomInfo]API返回的错误信息
     };
+    //因项目信息img不显示需特别处理的个别楼盘的楼幢ID
+    var resetProjectList = [
+        {
+            builIds: [
+                '_Nvdyi0aqwdrr4_vEE1yEA',
+                'zNcayCnXbHNbZFjuqABcmQ',
+                'osf07q_u1SlnW2mnzzGvUA',
+                'DXKShHLSXjcfVfRtR58JxQ',
+                'BMs2W/DG9tT0r87oOEcYgg',
+                'NpUcbqvhs_ww3ZtTIbA91g',
+                'vGyPYgMczivXTpUVXkfrKQ',
+                '4ie6/iv0q5WuI3l2lXRkBw',
+            ],
+            emptyTxt: '和光尘樾 ',
+        },
+        {
+            builIds: [
+                'H85THYxtxAPc0_IJxfNfVg',
+                'dyEUO5of8VbFj_VWfAtYyA',
+                '_cn7Zrwf1VoQ57_h9BMCSQ',
+                'X65zOBuwW7e4PPahVwf_cw',
+                'ooWKOieb/0QPEQUB_QHfSg',
+                'Et2mdSVordxUBVz56TPzyQ',
+                '_iz10xgVDfQScg18sFJGnw',
+                '9nzRVN1z0Dl_coiB93SJhQ',
+                '0NvQtPMid86oWa4qysCj1Q',
+                'ZNbLVyGZ1/XgjmaOSccJtA',
+                'sfJ7Me/eqY8MTuOk_kOEmw',
+                'HQRUsNsjeUld/Gd_PcSUcQ',
+                'iexozwEMpb3jRZzLfoO00w',
+                'AdcGyoSzNKNQnF/7U9uTIA',
+                'ylFKWS5jiE54R0wXtCxzaQ',
+                'LfR1GSc93ds44LsEP5Bw7w',
+                'Vwr/_Y2DptBHndpRXKMYVw',
+                'ow5QDChnWAKQS_9VR_kteQ',
+                'ICAH7OA9N56h4FsqmJ2hvg',
+            ],
+            emptyTxt: ' 中粮·天悦壹号',
+        },
+    ];
 
     // cq315house[楼盘表]解析开始
     var cq315houseAnalysis={};
@@ -142,7 +184,6 @@
                 tbCells[x].getElementsByClassName('spanKfsNsjmjg')[0].innerText = `建面拟售价格：${parseFloat(roomNsjmjg).toFixed(2)}`;
                 //房号cell中alink重置
                 let onclickValueParas = tbCells[x].getElementsByTagName('input')[0].getAttributeNode('onclick').nodeValue.match(/\{.*?\}/g);//获取input中onclick的传参
-                // console.log(onclickValueParas[0], typeof onclickValueParas[0]);
                 let unitNo = onclickValueParas[0].match(/(?<=uid:\s).*?(?=,)/gi); //获取传参中的(uid)单元No
                 let roomId = tbCells[x].getElementsByTagName('input')[0].value;//房号ID,记录在checkbox的value中
                 let curAlink = tbCells[x].getElementsByTagName('a')[0];
@@ -151,6 +192,16 @@
                 curAlink.style.cssText = 'color:#000;';
                 curAlink.removeAttribute('onclick');//移除原始onclick事件
                 curAlink.onclick=function(){cq315houseAnalysis.ShowRoomInfoByPass(this);};//alink重置onclick事件
+                curAlink.removeAttribute('onmouseover');//移除原始onmouseover事件
+                //初始化Title内容(和cq315原始保持一致)
+                curAlink.title = '用      途：' + tbCells[x].getElementsByClassName('spanRoomUse')[0].innerText.split('：')[1].toString().trim() +
+                                '\r\n结      构：' + tbCells[x].getElementsByClassName('spanRoomStru')[0].innerText.split('：')[1].toString().trim() +
+                                '\r\n户      型：' + tbCells[x].getElementsByClassName('spanRoomType')[0].innerText.split('：')[1].toString().trim() +
+                                '\r\n建筑面积：' + tbCells[x].getElementsByClassName('spanRoombArea')[0].innerText.split('：')[1].toString().trim() +
+                                '\r\n套内面积：' + tbCells[x].getElementsByClassName('spanRoomiArea')[0].innerText.split('：')[1].toString().trim() +
+                                '\r\n<a href=\"javascript:void(0);\">户室信息刷新</a>';
+                curAlink.onmouseover = function() {cq315houseAnalysis.titleMouseOver(this);}//重新绑定onmouseover事件
+                curAlink.onmouseout = function() {cq315houseAnalysis.titleMouseOut(this);}//重新绑定onmouseout事件
             }
         }
         // 头部增加相关统计信息元素
@@ -184,7 +235,6 @@
         // 1.3.暂定显示API返回的错误信息
         let spanApiMsg = document.createElement('span');
         spanApiMsg.id='spanApiMsg';
-        // spanApiMsg.style.cssText = 'display:none;';
         if (!tbTop2FirstRow.cells[3]) {
             let objTd = document.createElement('td');
             objTd.style.cssText = 'padding-left:20px;vertical-align:top;';
@@ -241,10 +291,121 @@
             document.getElementById('OpenTitleSpanDiv').style.display='none';
         };
         divOpenTitle.click();
-        //[楼盘说明]div标签重置
+        //[楼盘说明]div标签CSS重置
         let divLpsm = document.getElementById('lpsm');
         divLpsm.removeAttribute('class');
         divLpsm.style.cssText = 'padding: 10px 0 0 10px;';
+    };
+    /**
+     * 鼠标悬停显示TITLE
+     * @params    obj        当前须生成悬停的标签
+     */
+    cq315houseAnalysis.titleMouseOver=function(obj) {
+        //无TITLE悬停，直接返回
+        if (typeof obj.title == 'undefined' || obj.title == '') return false;
+        //不存在title_show标签则自动新建
+        let titleShow = document.getElementById("title_show");
+        if (titleShow == null) {
+            titleShow = document.createElement("div"); //新建Element
+            document.getElementsByTagName('body')[0].appendChild(titleShow); //加入body中
+            let attrId = document.createAttribute('id'); //新建Element的id属性
+            attrId.nodeValue = 'title_show'; //为id属性赋值
+            titleShow.setAttributeNode(attrId); //为Element设置id属性
+            let attrStyle = document.createAttribute('style'); //新建Element的style属性
+            attrStyle.nodeValue = 'position:absolute;' //绝对定位
+                + 'border:solid 1px #999; background:#fff;' //边框、背景颜色
+                + 'border-radius:2px;box-shadow:0 0 2px #999;' //圆角、阴影
+                + 'line-height:18px;' //行间距
+                + 'font-size:12px; padding:2px 5px;' //字体大小、内间距
+                + 'text-align:left;'//左对齐
+                + 'white-space: pre;';//保持空格及折行
+            try {
+                titleShow.setAttributeNode(attrStyle); //为Element设置style属性
+            } catch (e) {
+                //IE Fix
+                titleShow.style.position = 'absolute';
+                titleShow.style.border = 'solid 1px #999';
+                titleShow.style.background = '#fff';
+                titleShow.style.lineHeight = '18px';
+                titleShow.style.fontSize = '12px';
+                titleShow.style.padding = '2px 5px';
+                titleShow.style.textAlign = 'left';
+                titleShow.style.whiteSpace = 'pre';
+            }
+        }
+        //存储TITLE内容并清空原TITLE
+        document.titleValue = obj.title;
+        obj.title = '';
+        //在title_show中显示TITEL内容，模拟TITLE悬停效果
+        titleShow.innerHTML = document.titleValue;
+        //针对批量获取楼盘表户室信息失败的房号
+        //titleShow里绑定a链接标签,用户自行点击链接刷新当前房号户室信息
+        let objAlink = titleShow.getElementsByTagName('a')[0];
+        if (objAlink != undefined) {
+            objAlink.onclick = function () {
+                cq315houseAnalysis.getRoomStatus(obj.parentNode);
+            };
+        }
+        //显示悬停效果DIV
+        titleShow.style.display = 'block';
+        //根据鼠标位置设定title_show标签悬停位置
+        let e = window.event || arguments.callee.caller.arguments[0];
+        let clientx = e.clientX;
+        let clienty = e.clientY;
+        let pagex = e.pageX;
+        let pagey = e.pageY;
+        if (!pagex) {
+            pagex = clientx + (document.documentElement.scrollLeft || document.body.scrollLeft);
+        }
+        if (!pagey) {
+            pagey = clienty + (document.documentElement.scrollTop || document.body.scrollTop);
+        }
+        //最左值为当前鼠标位置 与 body宽度减去悬停效果DIV宽度的最小值，否则将导致右端遮盖
+        let left = Math.min(pagex, document.body.clientWidth - titleShow.clientWidth);
+        //Top位置设定
+        let topDown = 15; //下移15px避免遮盖当前标签
+        let titelHeight = titleShow.offsetHeight;//TITEL div元素的高度
+        let bodyHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight);//body可视窗口高度
+        let minHeight = Math.min(pagey + topDown + titelHeight, bodyHeight);
+        let top = (minHeight >= bodyHeight) ? pagey - topDown - titelHeight : minHeight - titelHeight;
+        // console.log('e.PageY:',pagey,'TitleTop:',top, 'TitleH:',titelHeight, 'BodyH:',bodyHeight, 'BrowserH:',window.innerHeight);
+        titleShow.style.left = left + "px"; //设置title_show在页面中的X轴位置。
+        titleShow.style.top = top + "px"; //设置title_show在页面中的Y轴位置。
+    };
+    /**
+     * 鼠标离开隐藏TITLE
+     * @params    obj        当前须生成悬停的标签
+     */
+    cq315houseAnalysis.titleMouseOut=function(obj) {
+        let titleShow = document.getElementById("title_show");
+        //不存在悬停标签则直接返回
+        if (titleShow == null) return false;
+        //存在悬停标签，则将TITLE内容还原给原[obj]标签
+        obj.title = document.titleValue;
+        //隐藏悬停标签DIV
+        let e = window.event || arguments.callee.caller.arguments[0];//鼠标、键盘事件
+        let clientx = e.clientX;
+        let clienty = e.clientY;
+        let pagex = e.pageX;
+        let pagey = e.pageY;
+        if (!pagex) {
+            pagex = clientx + (document.documentElement.scrollLeft || document.body.scrollLeft);
+        }
+        if (!pagey) {
+            pagey = clienty + (document.documentElement.scrollTop || document.body.scrollTop);
+        }
+        let x = pagex;
+        let y = pagey;
+        let divx1 = titleShow.offsetLeft;//左
+        let divy1 = titleShow.offsetTop; //上
+        let divx2 = titleShow.offsetLeft + titleShow.offsetWidth;//右
+        let divy2 = titleShow.offsetTop + titleShow.offsetHeight;//下
+        if (x < divx1 || x > divx2 || y < divy1 || y > divy2) {
+            titleShow.style.display = "none";
+        }
+        titleShow.onmouseleave = function () {
+            titleShow.style.display = "none";
+        };
     };
     // [楼盘表]页面生成房源显示信息类别的Radio组
     cq315houseAnalysis.createRoomDataTypeContentBox=function(){
@@ -290,6 +451,52 @@
             this.style.setProperty('background-color','#fff');
             this.style.setProperty('border','1px solid #fff');
         };
+    };
+    //用户反映315house个别楼盘项目信息img不显示,单独修正之
+    cq315houseAnalysis.resetProjectInfoImg=function(){
+        let emptyTxt = '';
+        let isResetProjectId = -1;
+        for (let y = 0, len = resetProjectList.length; y < len; y++) {
+            isResetProjectId = resetProjectList[y].builIds.indexOf(getQueryString('buildingid'));
+            if (isResetProjectId > -1){
+                emptyTxt = resetProjectList[y].emptyTxt;
+                break;
+            }
+        }
+        if (isResetProjectId <= -1) { console.log('Not need to reset project img.'); return; }
+        //
+        let buildId = getQueryString('buildingid');
+        let lbNoTxt = getQueryString('block');
+        let buildInfoUrl = `${RouteDataParas.webSrvUrl}${RouteDataParas.buildInfoXhr}`;
+        let payload_data = {'buildingid': buildId}; //参数:楼幢ID
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', buildInfoUrl); //异步调用
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onload = function (e) {
+            if (xhr.status === 200) {
+                // 返回的json数据结构: {"d":"{\"enterpriseName\":\"\",\"enterpriseOrgCode\":\"\",\"enterpriseDelegate\":\"\",\"projectName\":\"\",\"location\":\"\",\"presaleCert\":\"\"}"}
+                let json = JSON.parse(xhr.responseText);
+                let obj = JSON.parse(json.d);
+                let projectNameText = json.d.match(/(?<=projectName\":\").*?(?=\")/gi);
+                obj.projectName = projectNameText[0].replace(emptyTxt, '');//用户反映个别楼盘不显示项目信息img的修正
+                obj.ldNo = lbNoTxt || ''; //追加[ldNo]属性(参数)
+                let urlParams = JSON.stringify(obj);
+                urlParams = escape(urlParams);
+                // 项目信息相关img显示刷新
+                document.getElementById('OpenTitleSpanDiv').getElementsByTagName("span")[1].getElementsByTagName("img")[0].setAttribute('src',`${RouteDataParas.projNameWebSrvUrl}${urlParams}`);
+                document.getElementById('projectName_img').setAttribute('src',`${RouteDataParas.projNameWebSrvUrl}${urlParams}`);
+                document.getElementById('projectInfo_img').setAttribute('src',`${RouteDataParas.projInfoWebSrvUrl}${urlParams}`);
+            }
+            else {
+                console.log('Status Code:', xhr.status, buildId);
+            }
+        };
+        xhr.onerror = function (e) {
+            console.log('Status Code:', xhr.status, buildId);
+        };
+        //发送数据
+        xhr.send(JSON.stringify(payload_data));
     };
     //重置各房号cell相关信息
     cq315houseAnalysis.resetRoomCellsInfo=function(){
@@ -351,6 +558,13 @@
                 // 房屋状态信息保存至定义的[spanRoomStatus]元素中
                 objRoomStatus.innerText = `房屋状态：${obj.roomstatus}`;
                 objRoomState.innerText = `详细状态：${obj.S_ISONLINESIGN}/${obj.S_ISCONTRACT}/${obj.S_ISOTHERRIGHT}`;
+                //API错误提示信息刷新清理
+                let spanApiMsg = document.getElementById('spanApiMsg');
+                if (spanApiMsg != undefined && spanApiMsg.innerText.trim() != '') {
+                    let reg = new RegExp(`${roomInfos.unitNo}单元 ${roomInfos.roomNo}: 房源信息获取失败:\\s[\\d]{3};(\\n|\\r\\n)`);
+                    let replMsg = spanApiMsg.innerText.replace(reg, '');
+                    spanApiMsg.innerText = replMsg;
+                }
                 //
                 // 异步时处理页面相关信息
                 //
@@ -378,8 +592,9 @@
                 }
                 // 房号cell中alink重新绑定title信息
                 let curAlink = pTbCell.getElementsByTagName('a')[0];
+                curAlink.title = cq315houseAnalysis.__bindTitle(roomInfos);
                 curAlink.removeAttribute('onmouseover');//移除原始onmouseover事件
-                curAlink.onmouseover = cq315houseAnalysis.__bindTitle(curAlink, roomInfos);
+                curAlink.onmouseover = function() {cq315houseAnalysis.titleMouseOver(this);};//重新绑定onmouseover事件
                 // 建面单价区间范围显示
                 if (statsObj.bpricMin == 0) {
                     statsObj.bpricMin = roomInfos.roomNsjmjg * 1;
@@ -482,11 +697,11 @@
         }
     };
     //绑定alink的tips(title显示文本)
-    cq315houseAnalysis.__bindTitle=function(obj, roomInfos) {
-        let str = '房        号：' + roomInfos.unitNo + '单元 ' + roomInfos.roomNo +
-            '\r\n用        途：' + roomInfos.roomUse +
-            '\r\n结        构：' + roomInfos.roomStru +
-            '\r\n户        型：' + roomInfos.roomType +
+    cq315houseAnalysis.__bindTitle=function(roomInfos) {
+        let str = '房      号：' + roomInfos.unitNo + '单元 ' + roomInfos.roomNo +
+            '\r\n用      途：' + roomInfos.roomUse +
+            '\r\n结      构：' + roomInfos.roomStru +
+            '\r\n户      型：' + roomInfos.roomType +
             '\r\n建筑面积：' + roomInfos.roomBarea + ' ㎡' +
             '\r\n套内面积：' + roomInfos.roomIarea + ' ㎡' +
             '\r\n建面单价：' + roomInfos.roomNsjmjg + ' 元/㎡' +
@@ -494,7 +709,8 @@
             '\r\n房屋总价：' + roomInfos.roomTotalPrice + ' 万元' +
             '\r\n房屋状态：' + roomInfos.roomStatus +
             '\r\n详细状态：' + roomInfos.roomState;
-        obj.title = str;
+            // '\r\n<a href=\"javascript:void(0);\">户室信息刷新</a>';
+        return str;
     };
     //弹窗显示所点击房号的房源详细信息
     cq315houseAnalysis.ShowRoomInfoByPass=function(obj){
@@ -554,8 +770,16 @@
         if (cq315houseAnalysis.judgeWebUrl()){
             cq315houseAnalysis.initShowRoomsPage();
             cq315houseAnalysis.createRoomDataTypeContentBox();
+            cq315houseAnalysis.resetProjectInfoImg();
             cq315houseAnalysis.resetRoomCellsInfo();
         }
+        // Easter Egg
+        try {
+            window.console && window.console.log && (
+                console.log('%c\n当你挤地铁时，阿拉斯加的鳕鱼正跃出水面。\n当你看设计书时，大洋彼岸的海鸥正振翅掠过城市上方。\n当你被产品经理完虐时，极图的夜空散满了五彩斑斓。\n但是啊，别着急，\n当你为自己的未来努力奋斗时，\n那些你感觉从来不会看到的风景，\n那些你觉得终身不会遇到的人，\n你要的一切，\n正一步步向你走来。\n\n', 'color:green'),
+                console.log('%c查询助手版次:0.1.6\n重构Title tooltips功能，增加"户室信息刷新"链接;\n修正个别楼盘项目信息图片不显示的问题(非必须);\n\n', 'color:purple'),
+                console.log('%c寻Python开发志同道合者\n油猴脚本地址：https://greasyfork.org/zh-CN/scripts/444147-重庆网上房地产-房源信息查询助手', 'color:red'))
+        } catch (e) {}
     };
 
     cq315houseAnalysis.start();
