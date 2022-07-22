@@ -3,7 +3,7 @@
 // @name:en        CQ315House - Housing Info Query Assistant
 // @name:zh        重庆网上房地产-房源信息查询助手
 // @namespace      glasscp@163.com
-// @version        0.1.7
+// @version        0.1.8
 // @description    重庆网上房地产-房源信息查询助手(仅供个人学习研究使用,任何公司或个人不得利用其从事违法经营活动)
 // @description:en CQ315House - Housing information query assistant
 // @author         Kerry
@@ -128,6 +128,7 @@
         .legend-sell{background-color:#ff00ff;}
         .legend-subs{background-color:#ffa500;}
         .legend-unallow{background-color:#ffff00;}
+        .fold-legend{margin-left:10px;padding:2px 10px;}
     `
     GM_addStyle(cssText);
 
@@ -279,7 +280,19 @@
         let spanFoldCntInfo1=document.createElement('span');
         let spanFoldCntInfo2=document.createElement('span');
         let spanFoldTotalCnt=document.createElement('span');
+        let spanFoldSellCnt=document.createElement('span');
+        let spanFoldSubsCnt=document.createElement('span');
+        let spanFoldAllowCnt=document.createElement('span');
         spanFoldTotalCnt.id='spanFoldTotalCnt';
+        spanFoldAllowCnt.id='spanFoldAllowCnt';
+        spanFoldSellCnt.id='spanFoldSellCnt';
+        spanFoldSubsCnt.id='spanFoldSubsCnt';
+        spanFoldAllowCnt.className='fold-legend legend-allow';
+        spanFoldSellCnt.className='fold-legend legend-sell';
+        spanFoldSubsCnt.className='fold-legend legend-subs';
+        spanFoldAllowCnt.title='可销售';
+        spanFoldSellCnt.title='已销售';
+        spanFoldSubsCnt.title='已认购';
         divOpenTitle.innerHTML='';
         divOpenTitle.classList.add('div-open-title');
         divOpenTitle.removeAttribute('style');
@@ -296,6 +309,9 @@
         divOpenTitle.appendChild(spanFoldCntInfo1);
         divOpenTitle.appendChild(spanFoldTotalCnt);
         divOpenTitle.appendChild(spanFoldCntInfo2);
+        divOpenTitle.appendChild(spanFoldAllowCnt);
+        divOpenTitle.appendChild(spanFoldSellCnt);
+        divOpenTitle.appendChild(spanFoldSubsCnt);
         divOpenTitle.onclick=function(){
             document.getElementById('titlesPan').style.display='block';
             document.getElementById('OpenTitleSpanDiv').style.display='none';
@@ -580,6 +596,9 @@
                 document.getElementById('spanSubsCnt').innerText = statsObj.subsCnt;
                 document.getElementById('spanAllowCnt').innerText = statsObj.allowCnt;
                 document.getElementById('spanFoldTotalCnt').innerText = statsObj.totalCnt;
+                document.getElementById('spanFoldSellCnt').innerText = statsObj.sellCnt;
+                document.getElementById('spanFoldSubsCnt').innerText = statsObj.subsCnt;
+                document.getElementById('spanFoldAllowCnt').innerText = statsObj.allowCnt;
                 // 原始已销售#ff00ff,但其实是含有[认购]状态的
                 // [认购]状态下房号Cell背景色重置
                 if (roomStatus.indexOf('认购') != -1) {
@@ -771,7 +790,7 @@
         try {
             window.console && window.console.log && (
                 console.log('%c\n当你挤地铁时，阿拉斯加的鳕鱼正跃出水面。\n当你看设计书时，大洋彼岸的海鸥正振翅掠过城市上方。\n当你被产品经理完虐时，极图的夜空散满了五彩斑斓。\n但是啊，别着急，\n当你为自己的未来努力奋斗时，\n那些你感觉从来不会看到的风景，\n那些你觉得终身不会遇到的人，\n你要的一切，\n正一步步向你走来。\n\n', 'color:green'),
-                console.log(`%c${GM_info.script.name} Ver.${GM_info.script.version}:\nCSS整理;\n脚本调整为仅匹配[楼盘表]页面;\n\n`, 'color:purple'),
+                console.log(`%c${GM_info.script.name} Ver.${GM_info.script.version}:\n页面顶部折叠状态下显示各状态下的房源数;\n\n`, 'color:purple'),
                 console.log('%c寻Python开发志同道合者\n油猴脚本地址：https://greasyfork.org/scripts/444147', 'color:red'))
         } catch (e) {}
     };
