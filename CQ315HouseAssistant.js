@@ -812,36 +812,6 @@
         let tbRows = tb.tBodies[0].rows;
         let tbCellCnt = tb.tBodies[0].rows[0].cells.length;
         let tbRowsCnt = tb.tBodies[0].rows.length;
-        // // 先行后列遍历(先排单元房号再排楼层)
-        // for (let y = 0; y < tbRowsCnt; y++) {
-        //     let tbCells = tbRows[y].cells;
-        //     for (let x = 0, len = tbCells.length; x < len; x++) {
-        //         let objt = tbCells[x].getAttribute('objt');//房源Cell
-        //         if (objt != 'tdclass') continue; //objt='tdclass'的cell是房源
-        //         let tdStyle = String(tbCells[x].getAttribute("style")).toLowerCase();//房源Cell的style内容
-        //         if (tdStyle.indexOf("display:")!=-1 && tdStyle.indexOf("none")!=-1) continue; //隐藏的td不作处理
-        //         let roomInfos = {
-        //             roomId: tbCells[x].getElementsByTagName('a')[0].getAttribute('data-roomid'),
-        //             unitNo: tbCells[x].getElementsByTagName('a')[0].getAttribute('data-unitno'),//单元No
-        //             floorNo: tbCells[x].getElementsByTagName('a')[0].getAttribute('data-floorno'),//名义层No
-        //             roomNo: tbCells[x].getElementsByClassName('spanRoomNo')[0].innerText.split('：')[1].toString().trim(),//房号
-        //             roomUse: tbCells[x].getElementsByClassName('spanRoomUse')[0].innerText.split('：')[1].toString().trim(),//用途
-        //             roomStru: tbCells[x].getElementsByClassName('spanRoomStru')[0].innerText.split('：')[1].toString().trim(),//结构
-        //             roomType: tbCells[x].getElementsByClassName('spanRoomType')[0].innerText.split('：')[1].toString().trim(),//户型
-        //             roomBarea: tbCells[x].getElementsByClassName('spanRoombArea')[0].innerText.split('：')[1].toString().trim(),//建面
-        //             roomIarea: tbCells[x].getElementsByClassName('spanRoomiArea')[0].innerText.split('：')[1].toString().trim(),//套内
-        //             roomNsjg: tbCells[x].getElementsByClassName('spanKfsNsjg')[0].innerText.split('：')[1].toString().trim(),//套内单价
-        //             roomNsjmjg: tbCells[x].getElementsByClassName('spanKfsNsjmjg')[0].innerText.split('：')[1].toString().trim(),//建面单价
-        //             roomTotalPrice: tbCells[x].getElementsByClassName('spanRoomTotalPrice')[0].innerText.split('：')[1].toString().trim(),//房屋总价
-        //             roomStatus: tbCells[x].getElementsByClassName('spanRoomStatus')[0].innerText.split('：')[1].toString().trim(),//房屋状态
-        //             roomState: tbCells[x].getElementsByClassName('spanRoomState')[0].innerText.split('：')[1].toString().trim(),//房屋详细状态
-        //         };
-        //         //楼幢, 名义层, 单元, 房号, 户型, 建面, 套内, 套内单价, 建面单价, 房屋总价, 房屋状态, 房屋详细状态
-        //         datas.push([blockTxt, roomInfos.floorNo, roomInfos.unitNo, roomInfos.roomNo, roomInfos.roomType, 
-        //             roomInfos.roomBarea, roomInfos.roomIarea, roomInfos.roomNsjg, roomInfos.roomNsjmjg, roomInfos.roomTotalPrice, 
-        //             roomInfos.roomStatus, roomInfos.roomState]);
-        //     }
-        // }
         // 先列后行遍历(先排楼层再排单元房号)
         for (let x = 0; x < tbCellCnt; x++) {
             for (let y = 0; y < tbRowsCnt; y++) {
