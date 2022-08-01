@@ -3,7 +3,7 @@
 // @name:en        CQ315House - Housing Info Query Assistant
 // @name:zh        重庆网上房地产-房源信息查询助手
 // @namespace      glasscp@163.com
-// @version        0.1.8
+// @version        0.1.9
 // @description    重庆网上房地产-房源信息查询助手(仅供个人学习研究使用,任何公司或个人不得利用其从事违法经营活动)
 // @description:en CQ315House - Housing information query assistant
 // @author         Kerry
@@ -119,7 +119,9 @@
         .div-datatype{margin:-1px 0 10px 5px;padding-left:10px;text-align:left;height:40px;line-height:40px;}
         .radio-inline:not(:first-child){margin-left:20px;}
         .radio-item{vertical-align:middle;margin-top:-2px;}
-        .btn-excel{margin-left:30px;height:25px;cursor:pointer;background-color:#fff;border:1px solid #fff;border-radius:4px;}
+        .btn-excel:first-of-type{margin-left:30px;}
+        .btn-excel:not(:first-of-type){margin-left:10px;}
+        .btn-excel{height:25px;cursor:pointer;background-color:#fff;border:1px solid #fff;border-radius:4px;}
         .btn-excel:hover{background-color:#eee;border:1px solid #999;}
         .bg-orange{background-color:#ffa500!important;}/*[认购]状态橙色背景*/
         .color-black{color:#000;}
@@ -148,8 +150,9 @@
     // 3.增加[spanRoomTotalPrice]元素记录各cell的房屋总价信息
     // 4.房号cell中a标签绑定[data-roomid]属性
     // 5.房号cell中a标签绑定[data-unitno]属性
-    // 6.房号cell中a标签重置onclick事件
-    // 7.头部增加相关统计信息元素
+    // 6.房号cell中a标签绑定[data-floorno]属性
+    // 7.房号cell中a标签重置onclick事件
+    // 8.头部增加相关统计信息元素
     cq315houseAnalysis.initShowRoomsPage=function(){
         //各房号cell设置
         let tb = document.getElementById(vfObj.tbId);
@@ -158,6 +161,7 @@
         let roomStatus = 'None';
         for (let i = tbRows.length - 1; i >= 0; i--) {
             let tbCells = tbRows[i].cells;
+            let floorNo = tbRows[i].cells[1].getAttribute('value');//名义层
             for (let x = 0, len = tbCells.length; x < len; x++) {
                 let objt = tbCells[x].getAttribute('objt');//房源Cell
                 if (objt != 'tdclass') continue; //objt='tdclass'的cell是房源
@@ -199,6 +203,7 @@
                 let curAlink = tbCells[x].getElementsByTagName('a')[0];
                 curAlink.setAttribute('data-roomid',roomId);//把房号ID绑定给自定义data-roomid属性
                 curAlink.setAttribute('data-unitno',unitNo);//把单元No绑定给自定义data-unitno属性
+                curAlink.setAttribute('data-floorno',floorNo);//把名义层No绑定给自定义data-floorno属性
                 curAlink.className = 'color-black';
                 curAlink.removeAttribute('onclick');//移除原始onclick事件
                 curAlink.onclick=function(){cq315houseAnalysis.ShowRoomInfoByPass(this);};//alink重置onclick事件
@@ -453,7 +458,8 @@
             }
             radios += '</label>';
         }
-        radios += '<input type="button" name="btnExportExcel" value="导出Excel" class="btn-excel">';
+        radios += '<input type="button" name="btnExportExcel" value="导出Excel(简)" class="btn-excel">';
+        radios += '<input type="button" name="btnExportExcelFull" value="导出Excel(详细)" class="btn-excel">';
         divObj.innerHTML = radios;
         parent.insertBefore(divObj, targentElement.nextSibling);
         //绑定事件
@@ -464,6 +470,8 @@
         //绑定导出Excel按钮事件
         let objBtn = document.getElementsByName('btnExportExcel')[0];
         objBtn.onclick = function(){cq315houseAnalysis.exportExcel();};
+        let objBtnFull = document.getElementsByName('btnExportExcelFull')[0];
+        objBtnFull.onclick = function(){cq315houseAnalysis.exportExcelFull();};
     };
     //用户反映315house个别楼盘项目信息img不显示,单独修正之
     cq315houseAnalysis.resetProjectInfoImg=function(){
@@ -479,7 +487,7 @@
         if (isResetProjectId <= -1) { console.log('Not need to reset project img.'); return; }
         //
         let buildId = getQueryString('buildingid');
-        let lbNoTxt = getQueryString('block');
+        let ldNoTxt = getQueryString('block');
         let buildInfoUrl = `${RouteDataParas.webSrvUrl}${RouteDataParas.buildInfoXhr}`;
         let payload_data = {'buildingid': buildId}; //参数:楼幢ID
         let xhr = new XMLHttpRequest();
@@ -493,7 +501,7 @@
                 let obj = JSON.parse(json.d);
                 let projectNameText = json.d.match(/(?<=projectName\":\").*?(?=\")/gi);
                 obj.projectName = projectNameText[0].replace(emptyTxt, '');//用户反映个别楼盘不显示项目信息img的修正
-                obj.ldNo = lbNoTxt || ''; //追加[ldNo]属性(参数)
+                obj.ldNo = ldNoTxt || ''; //追加[ldNo]属性(参数)
                 let urlParams = JSON.stringify(obj);
                 urlParams = escape(urlParams);
                 // 项目信息相关img显示刷新
@@ -544,6 +552,7 @@
         let roomInfos = {
             roomId: pTbCell.getElementsByTagName('a')[0].getAttribute('data-roomid'),
             unitNo: pTbCell.getElementsByTagName('a')[0].getAttribute('data-unitno'),//单元No
+            floorNo: pTbCell.getElementsByTagName('a')[0].getAttribute('data-floorno'),//名义层No
             roomNo: pTbCell.getElementsByClassName('spanRoomNo')[0].innerText.split('：')[1].toString().trim(),//房号
             roomUse: pTbCell.getElementsByClassName('spanRoomUse')[0].innerText.split('：')[1].toString().trim(),//用途
             roomStru: pTbCell.getElementsByClassName('spanRoomStru')[0].innerText.split('：')[1].toString().trim(),//结构
@@ -669,6 +678,7 @@
                 let roomInfos = {
                     roomId: tbCells[x].getElementsByTagName('a')[0].getAttribute('data-roomid'),
                     unitNo: tbCells[x].getElementsByTagName('a')[0].getAttribute('data-unitno'),//单元No
+                    floorNo: tbCells[x].getElementsByTagName('a')[0].getAttribute('data-floorno'),//名义层No
                     roomNo: tbCells[x].getElementsByClassName('spanRoomNo')[0].innerText.split('：')[1].toString().trim(),//房号
                     roomUse: tbCells[x].getElementsByClassName('spanRoomUse')[0].innerText.split('：')[1].toString().trim(),//用途
                     roomStru: tbCells[x].getElementsByClassName('spanRoomStru')[0].innerText.split('：')[1].toString().trim(),//结构
@@ -779,6 +789,103 @@
         XLSX.writeFile(wb, fileName);
     };
 
+    //将查询楼幢所有户室详细数据导出Excel
+    cq315houseAnalysis.exportExcelFull=function(){
+        //
+        // use SheetJS js-xlsx: https://github.com/SheetJS/sheetjs
+        //
+        let fileName = 'ShowRooms-Detail-Infos.xlsx';
+
+        // 1.创建新的workbook
+        let wb = XLSX.utils.book_new();
+        if(!wb.Props) wb.Props = {};
+        wb.Props.Title = fileName;
+        wb.Props.Subject = 'Export from web browser';
+        wb.Props.Author = '房源信息查询助手';
+
+        // 2.提取楼幢户室详细数据(通过table详细数据创建ws)
+        let blockTxt = getQueryString('block');
+        let datas=[];
+        datas.push(['楼幢号','名义层','单元','房号','户型','建面','套内','套内单价(元)','建面单价(元)','房屋总价(万元)','房屋状态','房屋详细状态']);
+        let tb = document.getElementById(vfObj.tbId);
+        if (tb == undefined) return;
+        let tbRows = tb.tBodies[0].rows;
+        let tbCellCnt = tb.tBodies[0].rows[0].cells.length;
+        let tbRowsCnt = tb.tBodies[0].rows.length;
+        // // 先行后列遍历(先排单元房号再排楼层)
+        // for (let y = 0; y < tbRowsCnt; y++) {
+        //     let tbCells = tbRows[y].cells;
+        //     for (let x = 0, len = tbCells.length; x < len; x++) {
+        //         let objt = tbCells[x].getAttribute('objt');//房源Cell
+        //         if (objt != 'tdclass') continue; //objt='tdclass'的cell是房源
+        //         let tdStyle = String(tbCells[x].getAttribute("style")).toLowerCase();//房源Cell的style内容
+        //         if (tdStyle.indexOf("display:")!=-1 && tdStyle.indexOf("none")!=-1) continue; //隐藏的td不作处理
+        //         let roomInfos = {
+        //             roomId: tbCells[x].getElementsByTagName('a')[0].getAttribute('data-roomid'),
+        //             unitNo: tbCells[x].getElementsByTagName('a')[0].getAttribute('data-unitno'),//单元No
+        //             floorNo: tbCells[x].getElementsByTagName('a')[0].getAttribute('data-floorno'),//名义层No
+        //             roomNo: tbCells[x].getElementsByClassName('spanRoomNo')[0].innerText.split('：')[1].toString().trim(),//房号
+        //             roomUse: tbCells[x].getElementsByClassName('spanRoomUse')[0].innerText.split('：')[1].toString().trim(),//用途
+        //             roomStru: tbCells[x].getElementsByClassName('spanRoomStru')[0].innerText.split('：')[1].toString().trim(),//结构
+        //             roomType: tbCells[x].getElementsByClassName('spanRoomType')[0].innerText.split('：')[1].toString().trim(),//户型
+        //             roomBarea: tbCells[x].getElementsByClassName('spanRoombArea')[0].innerText.split('：')[1].toString().trim(),//建面
+        //             roomIarea: tbCells[x].getElementsByClassName('spanRoomiArea')[0].innerText.split('：')[1].toString().trim(),//套内
+        //             roomNsjg: tbCells[x].getElementsByClassName('spanKfsNsjg')[0].innerText.split('：')[1].toString().trim(),//套内单价
+        //             roomNsjmjg: tbCells[x].getElementsByClassName('spanKfsNsjmjg')[0].innerText.split('：')[1].toString().trim(),//建面单价
+        //             roomTotalPrice: tbCells[x].getElementsByClassName('spanRoomTotalPrice')[0].innerText.split('：')[1].toString().trim(),//房屋总价
+        //             roomStatus: tbCells[x].getElementsByClassName('spanRoomStatus')[0].innerText.split('：')[1].toString().trim(),//房屋状态
+        //             roomState: tbCells[x].getElementsByClassName('spanRoomState')[0].innerText.split('：')[1].toString().trim(),//房屋详细状态
+        //         };
+        //         //楼幢, 名义层, 单元, 房号, 户型, 建面, 套内, 套内单价, 建面单价, 房屋总价, 房屋状态, 房屋详细状态
+        //         datas.push([blockTxt, roomInfos.floorNo, roomInfos.unitNo, roomInfos.roomNo, roomInfos.roomType, 
+        //             roomInfos.roomBarea, roomInfos.roomIarea, roomInfos.roomNsjg, roomInfos.roomNsjmjg, roomInfos.roomTotalPrice, 
+        //             roomInfos.roomStatus, roomInfos.roomState]);
+        //     }
+        // }
+        // 先列后行遍历(先排楼层再排单元房号)
+        for (let x = 0; x < tbCellCnt; x++) {
+            for (let y = 0; y < tbRowsCnt; y++) {
+                let tbCell = tbRows[y].cells[x];
+                let objt = tbCell.getAttribute('objt');//房源Cell
+                if (objt != 'tdclass') {continue; } //objt='tdclass'的cell是房源
+                let tdStyle = String(tbCell.getAttribute("style")).toLowerCase();//房源Cell的style内容
+                if (tdStyle.indexOf("display:")!=-1 && tdStyle.indexOf("none")!=-1) continue; //隐藏的td不作处理
+                let roomInfos = {
+                    roomId: tbCell.getElementsByTagName('a')[0].getAttribute('data-roomid'),
+                    unitNo: tbCell.getElementsByTagName('a')[0].getAttribute('data-unitno'),//单元No
+                    floorNo: tbCell.getElementsByTagName('a')[0].getAttribute('data-floorno'),//名义层No
+                    roomNo: tbCell.getElementsByClassName('spanRoomNo')[0].innerText.split('：')[1].toString().trim(),//房号
+                    roomUse: tbCell.getElementsByClassName('spanRoomUse')[0].innerText.split('：')[1].toString().trim(),//用途
+                    roomStru: tbCell.getElementsByClassName('spanRoomStru')[0].innerText.split('：')[1].toString().trim(),//结构
+                    roomType: tbCell.getElementsByClassName('spanRoomType')[0].innerText.split('：')[1].toString().trim(),//户型
+                    roomBarea: tbCell.getElementsByClassName('spanRoombArea')[0].innerText.split('：')[1].toString().trim(),//建面
+                    roomIarea: tbCell.getElementsByClassName('spanRoomiArea')[0].innerText.split('：')[1].toString().trim(),//套内
+                    roomNsjg: tbCell.getElementsByClassName('spanKfsNsjg')[0].innerText.split('：')[1].toString().trim(),//套内单价
+                    roomNsjmjg: tbCell.getElementsByClassName('spanKfsNsjmjg')[0].innerText.split('：')[1].toString().trim(),//建面单价
+                    roomTotalPrice: tbCell.getElementsByClassName('spanRoomTotalPrice')[0].innerText.split('：')[1].toString().trim(),//房屋总价
+                    roomStatus: tbCell.getElementsByClassName('spanRoomStatus')[0].innerText.split('：')[1].toString().trim(),//房屋状态
+                    roomState: tbCell.getElementsByClassName('spanRoomState')[0].innerText.split('：')[1].toString().trim(),//房屋详细状态
+                };
+                //楼幢, 名义层, 单元, 房号, 户型, 建面, 套内, 套内单价, 建面单价, 房屋总价, 房屋状态, 房屋详细状态
+                datas.push([blockTxt, roomInfos.floorNo, roomInfos.unitNo, roomInfos.roomNo, roomInfos.roomType, 
+                    roomInfos.roomBarea, roomInfos.roomIarea, roomInfos.roomNsjg, roomInfos.roomNsjmjg, roomInfos.roomTotalPrice, 
+                    roomInfos.roomStatus, roomInfos.roomState]);
+            }
+        }
+        let ws = XLSX.utils.aoa_to_sheet(datas, {cellDates:true});
+
+        // 2.1.数据处理, 追加一个新行记录Excel创建日期(非必须)
+        let dateTime = new Date(+new Date()+8*3600*1000);
+        XLSX.utils.sheet_add_aoa(ws, [["Created "+new Date(dateTime).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')]], {origin:-1});
+
+        // 3.将创建的worksheet追加到workbook
+        let wsName = 'ShowRooms';
+        XLSX.utils.book_append_sheet(wb, ws, wsName);
+
+        // 4.通过`writeFile`保存并下载 XLSX 文件
+        XLSX.writeFile(wb, fileName);
+    };
+
     cq315houseAnalysis.start=function(){
         if (cq315houseAnalysis.judgeWebUrl()){
             cq315houseAnalysis.initShowRoomsPage();
@@ -790,7 +897,7 @@
         try {
             window.console && window.console.log && (
                 console.log('%c\n当你挤地铁时，阿拉斯加的鳕鱼正跃出水面。\n当你看设计书时，大洋彼岸的海鸥正振翅掠过城市上方。\n当你被产品经理完虐时，极图的夜空散满了五彩斑斓。\n但是啊，别着急，\n当你为自己的未来努力奋斗时，\n那些你感觉从来不会看到的风景，\n那些你觉得终身不会遇到的人，\n你要的一切，\n正一步步向你走来。\n\n', 'color:green'),
-                console.log(`%c${GM_info.script.name} Ver.${GM_info.script.version}:\n页面顶部折叠状态下显示各状态下的房源数;\n\n`, 'color:purple'),
+                console.log(`%c${GM_info.script.name} Ver.${GM_info.script.version}:\n增加楼幢所有户室详细信息导出Excel功能;\n\n`, 'color:purple'),
                 console.log('%c寻Python开发志同道合者\n油猴脚本地址：https://greasyfork.org/scripts/444147', 'color:red'))
         } catch (e) {}
     };
